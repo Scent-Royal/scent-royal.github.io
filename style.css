@@ -39,12 +39,16 @@ header p {
 
 /* ===== Table Container ===== */
 .table-container {
-  display: flex;
-  justify-content: center;
   margin: 2rem auto;
-  padding: 0 1rem; /* breathing space on small screens */
+  padding: 0 1rem;
   width: 100%;
   box-sizing: border-box;
+}
+
+table {
+  margin: 0 auto; /* centers the table */
+  width: auto; /* let it shrink to fit */
+  max-width: 1100px;
 }
 
 /* ===== Table ===== */
