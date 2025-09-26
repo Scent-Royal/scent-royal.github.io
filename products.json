@@ -3,21 +3,21 @@
     "id": 1,
     "name": "Dior Sauvage",
     "description": "Dior Sauvage is a magnetic, timeless masculine scent that blends raw, fresh Bergamot and Pepper with a powerful, warm base of Ambroxan, Cedar, and Vanilla.",
-    "image": "./assets/sauvage.jpg",
+    "price": "3499",  "image": "./assets/sauvage.jpg",
     "whatsapp_message": "Hello, I'm interested in the Dior Sauvage Parfume (ID: 1) for Rs.3499. Please provide more details."
   },
   {
     "id": 2,
     "name": "King’s Ember 6ml",
     "description": "King’s Ember is a warm, elegant fragrance with woods, soft spices, and amber. Designed for lasting impact, it comes in a sleek 6ml bottle perfect to carry your royal essence anywhere.",
-    "image": "./assets/rose-perfume.jpeg",
+    "price": "399",  "image": "./assets/Kings-Ember-6ml.png",
     "whatsapp_message": "Hello, I'm interested in the King’s Ember 6ml (ID: 2) for Rs.399. Please provide more details."
   },
   {
     "id": 3,
     "name": "King’s Ember 3ml",
     "description": "A warm blend of woods, soft spices, and amber in a sleek 3ml bottle. Long-lasting and elegant, perfect for carrying your royal essence anywhere.",
-    "image": "./assets/citrus.jpeg",
+    "price": "199",  "image": "./assets/King’s-Ember-3ml.png",
     "whatsapp_message": "Hello, I'm interested in the King’s Ember 3ml (ID: 3) for Rs.199. Please provide more details."
   }
 ]
