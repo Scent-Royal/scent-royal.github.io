@@ -34,13 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         products.forEach((product, idx) => {
             // safe text for wa message
-            const defaultMessage = `Hi, I'm interested in ${product.name || "this product"}${product.price ? ` priced at ${product.price}` : ""}.`;
+            const defaultMessage = `Hi, I'm interested in Rs{product.name || "this product"}Rs{product.price ? ` priced at Rs{product.price}` : ""}.`;
             const message = (product.whatsapp_message && product.whatsapp_message.trim())
                 ? product.whatsapp_message
                 : defaultMessage;
 
             const whatsappLink = whatsappNumber
-                ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+                ? `https://wa.me/Rs{whatsappNumber}?text=Rs{encodeURIComponent(message)}`
                 : "#";
 
             // escape name/desc/price so innerHTML doesn't break
@@ -52,16 +52,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const rowHtml = `
                 <tr>
-                    <td>${idx + 1}</td>
-                    <td>${safeName}</td>
-                    <td>${safeDesc}</td>
-                    <td class="col-price">${safePrice}</td> <td>
-                        <button class="buy-btn" title="Buy on WhatsApp: ${safeName}" data-walink="${whatsappLink}">
+                    <td>Rs{idx + 1}</td>
+                    <td>Rs{safeName}</td>
+                    <td>Rs{safeDesc}</td>
+                    <td class="col-price">Rs{safePrice}</td> <td>
+                        <button class="buy-btn" title="Buy on WhatsApp: Rs{safeName}" data-walink="Rs{whatsappLink}">
                             <i class="fa fa-shopping-cart"></i> Buy
                         </button>
                     </td>
                     <td>
-                        <button class="pic-btn" title="View Picture" data-image="${safeImg}">
+                        <button class="pic-btn" title="View Picture" data-image="Rs{safeImg}">
                             <i class="fa fa-camera"></i>
                         </button>
                     </td>
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // if image fails to load, hide modal and alert user
                 modalImg.onerror = () => {
                     modal.style.display = "none";
-                    alert(`Unable to load image for: ${productName}. Check the image URL for issues (e.g., CORS/invalid URL).`);
+                    alert(`Unable to load image for: Rs{productName}. Check the image URL for issues (e.g., CORS/invalid URL).`);
                 };
 
                 modal.style.display = "block";
