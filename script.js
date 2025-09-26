@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => {
             console.error("Error fetching products.json:", err);
             const tbody = document.querySelector("#productTable tbody");
-            // Colspan corrected to 6
+            // Corrected Colspan: 6 columns (S/No, Items, Description, Price, Buy, Picture)
             if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Error loading products — check console.</td></tr>`;
         });
 
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tbody.innerHTML = "";
 
         if (!Array.isArray(products) || products.length === 0) {
-            // Colspan corrected to 6
+            // Corrected Colspan: 6 columns
             tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No products found.</td></tr>`;
             return;
         }
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // safe text for wa message (uses existing whatsapp_message)
             const message = (product.whatsapp_message && product.whatsapp_message.trim())
                 ? product.whatsapp_message
-                // Fallback message now uses product.price if whatsapp_message is missing or empty
+                // Fallback message now uses product.price
                 : `Hi, I'm interested in ${product.name || "this product"}${product.price ? ` priced at Rs. ${product.price}` : ""}`;
 
             const whatsappLink = whatsappNumber
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
                 
+                // This still correctly targets the product name in the 2nd <td>
                 const productName = btn.closest("tr").querySelector("td:nth-child(2)")?.textContent || "Product image";
                 
                 // Set src and show modal
