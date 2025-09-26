@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // ⚠️ IMPORTANT: Your products.json must include a 'price' field for each product.
+    // Example: { "id": 1, "name": "Rose Bloom", "price": "Rs. 2500", "description": "...", "image": "..." }
+    
     // Use digits-only international phone (no +). If you include + it will be stripped.
     const YOUR_WHATSAPP_NUMBER = "923493546246";
 
@@ -11,8 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => {
             console.error("Error fetching products.json:", err);
             const tbody = document.querySelector("#productTable tbody");
-            // FIX 1: Added backticks to fix syntax error for the error message
-            if (tbody) tbody.innerHTML = `<tr><td colspan="5">Error loading products — check console.</td></tr>`;
+            // Colspan updated from 5 to 6
+            if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Error loading products — check console.</td></tr>`;
         });
 
     function renderTable(products, whatsappNumber) {
@@ -21,36 +24,40 @@ document.addEventListener("DOMContentLoaded", () => {
         tbody.innerHTML = "";
 
         if (!Array.isArray(products) || products.length === 0) {
-            // FIX 2: Added backticks to fix syntax error for the 'no products' message
-            tbody.innerHTML = `<tr><td colspan="5">No products found.</td></tr>`;
+            // Colspan updated from 5 to 6
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No products found.</td></tr>`;
             return;
         }
 
+        // Use a DocumentFragment or insertAdjacentHTML for better performance than innerHTML +=
+        // const fragment = document.createDocumentFragment();
+
         products.forEach((product, idx) => {
             // safe text for wa message
+            const defaultMessage = `Hi, I'm interested in ${product.name || "this product"}${product.price ? ` priced at ${product.price}` : ""}.`;
             const message = (product.whatsapp_message && product.whatsapp_message.trim())
                 ? product.whatsapp_message
-                // FIX 3: Added backticks to fix syntax error for the default message
-                : `Hi, I'm interested in ${product.name || "this product"}`;
+                : defaultMessage;
 
             const whatsappLink = whatsappNumber
                 ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
                 : "#";
 
-            // escape name/desc so innerHTML doesn't break
+            // escape name/desc/price so innerHTML doesn't break
             const safeName = escapeHtml(product.name || "");
             const safeDesc = escapeHtml(product.description || "");
+            const safePrice = escapeHtml(product.price || "N/A"); // Handle missing price
             // escape double quotes inside URL attribute
             const safeImg = (product.image || "").replace(/"/g, "&quot;");
 
-            tbody.innerHTML += `
+            const rowHtml = `
                 <tr>
                     <td>${idx + 1}</td>
                     <td>${safeName}</td>
                     <td>${safeDesc}</td>
-                    <td>
-                        <button class="buy-btn" title="Buy on WhatsApp: ${whatsappLink}" data-walink="${whatsappLink}">
-                            <i class="fa fa-shopping-cart"></i>
+                    <td class="col-price">${safePrice}</td> <td>
+                        <button class="buy-btn" title="Buy on WhatsApp: ${safeName}" data-walink="${whatsappLink}">
+                            <i class="fa fa-shopping-cart"></i> Buy
                         </button>
                     </td>
                     <td>
@@ -60,7 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     </td>
                 </tr>
             `;
+            
+            // Append the row to the tbody efficiently
+            tbody.insertAdjacentHTML('beforeend', rowHtml);
         });
+
+        // --- Event Listeners for Buy and Picture Buttons ---
 
         // Attach listeners AFTER building the table
         document.querySelectorAll(".buy-btn").forEach(btn => {
@@ -86,20 +98,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("No image URL provided for this product.");
                     return;
                 }
+                
+                // Set alt text to the product name
+                const productName = btn.closest("tr").querySelector("td:nth-child(2)")?.textContent || "Product image";
+                
                 // Set src and show modal
                 modalImg.src = imgSrc;
-                modalImg.alt = btn.closest("tr").querySelector("td:nth-child(2)")?.textContent || "Product image";
+                modalImg.alt = productName;
 
                 // if image fails to load, hide modal and alert user
                 modalImg.onerror = () => {
                     modal.style.display = "none";
-                    alert("Unable to load image. Open the image URL directly to debug (CORS/invalid URL).");
+                    alert(`Unable to load image for: ${productName}. Check the image URL for issues (e.g., CORS/invalid URL).`);
                 };
 
                 modal.style.display = "block";
             });
         });
 
+        // Modal closing listeners
         if (closeBtn) closeBtn.addEventListener("click", () => modal.style.display = "none");
         window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
         window.addEventListener("keydown", e => { if (e.key === "Escape") modal.style.display = "none"; });
