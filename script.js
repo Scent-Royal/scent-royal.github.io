@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Use digits-only international phone (no +). If you include + it will be stripped.
-    const YOUR_WHATSAPP_NUMBER = "923493546246";
+    const YOUR_WHATSAPP_NUMBER = "923369410170";
 
     fetch("products.json")
         .then(res => {
